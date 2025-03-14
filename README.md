@@ -2,7 +2,9 @@
 
 Block explorer for Evrmore.  Uses RavenRebel's https://evr-rpc-mainnet.ting.finance/rpc/ backend.
 
-Can be run locally, on any web server, or converted to single file and run off IPFS.
+Can be run locally, on any web server, or converted to single file and run off IPFS or on Github pages.
+
+Live at:  https://johnconnornpc.github.io/EVR-TRACKY-BOI/
 
 Tracking features still being implimented.
 
