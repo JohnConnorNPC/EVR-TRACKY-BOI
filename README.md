@@ -1,5 +1,10 @@
 # EVR-TRACKY-BOI
 
+Block explorer for Evrmore.  Uses RavenRebel's https://evr-rpc-mainnet.ting.finance/rpc/ backend.
+
+Can be run locally, on any web server, or converted to single file and run off IPFS.
+
+Tracking features still being implimented.
 
 ![image](https://github.com/user-attachments/assets/f1e2d875-0ce4-4df5-984b-72a9b328d20e)
 
