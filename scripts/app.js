@@ -19,7 +19,7 @@ const appState = {
 };
 
 document.addEventListener('DOMContentLoaded', function() {
-    console.log(document.getElementById('logo-link'));
+    
 
     initializeApp().catch(error => {
         console.error('Application initialization error:', error);
