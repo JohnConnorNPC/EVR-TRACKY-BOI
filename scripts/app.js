@@ -19,6 +19,8 @@ const appState = {
 };
 
 document.addEventListener('DOMContentLoaded', function() {
+    console.log(document.getElementById('logo-link'));
+
     initializeApp().catch(error => {
         console.error('Application initialization error:', error);
         UI.showNotification('Connection Error', 'Failed to connect to the Evrmore network. Please check your connection and reload the page.', 'error');
