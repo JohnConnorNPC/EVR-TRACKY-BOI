@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60">
+  <!-- Background shape -->
+  <rect width="200" height="60" rx="8" fill="#2c3e50"/>
+  
+  <!-- EVR Text -->
+  <text x="63" y="38" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#fff">EVR</text>
+  
+  <!-- Blockchain Icon -->
+  <g transform="translate(30, 30)">
+    <circle cx="0" cy="0" r="20" fill="#3498db"/>
+    <g fill="white">
+      <!-- Cube wireframe -->
+      <polygon points="-8,-8 8,-8 8,8 -8,8" fill="none" stroke="white" stroke-width="2"/>
+      <polygon points="-4,-4 12,-4 12,12 -4,12" fill="none" stroke="white" stroke-width="2"/>
+      <line x1="-8" y1="-8" x2="-4" y2="-4" stroke="white" stroke-width="2"/>
+      <line x1="8" y1="-8" x2="12" y2="-4" stroke="white" stroke-width="2"/>
+      <line x1="8" y1="8" x2="12" y2="12" stroke="white" stroke-width="2"/>
+      <line x1="-8" y1="8" x2="-4" y2="12" stroke="white" stroke-width="2"/>
+    </g>
+  </g>
+  
+  <!-- Tracky Boi Text -->
+  <text x="88" y="54" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#3498db">Tracky Boi</text>
+</svg>

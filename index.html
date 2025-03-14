@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EVR Tracky Boi - Evrmore Blockchain Explorer</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    
+
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header with search bar -->
+        <header class="header">
+            <div class="header-content">
+                <!-- Replace the current logo-container with this code -->
+<div class="logo-container">
+    <a href="#" id="logo-link" class="logo-link">
+        <img src="img/logo.svg" alt="EVR Tracky Boi Logo" class="logo">
+        
+    </a>
+</div>
+
+                <div class="search-container">
+                    <form id="search-form">
+                        <input type="text" id="search-input" placeholder="Search by block height, hash, transaction ID, address, or asset...">
+                        <button type="submit"><i class="fas fa-search"></i></button>
+                    </form>
+                </div>
+                <div class="network-status">
+                    <span id="connection-status"><i class="fas fa-plug"></i> Connected</span>
+                    <span id="block-height"><i class="fas fa-cube"></i> Loading...</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="main-nav">
+            <ul>
+                <li><a href="#" data-view="dashboard" class="active">Dashboard</a></li>
+                <li><a href="#" data-view="blocks">Blocks</a></li>
+                <li><a href="#" data-view="transactions">Transactions</a></li>
+                <li><a href="#" data-view="addresses">Addresses</a></li>
+                <li><a href="#" data-view="assets">Assets</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main content area -->
+        <main id="main-content">
+            <!-- Views will be loaded here dynamically -->
+            <div id="dashboard-view" class="view active-view">
+                <!-- Dashboard content -->
+                <div class="dashboard-grid">
+                    <div class="dashboard-card network-stats">
+                        <h2>Network Statistics</h2>
+                        <div class="stat-grid">
+                            <div class="stat-item">
+                                <span class="stat-label">Block Height</span>
+                                <span class="stat-value" id="dash-block-height">Loading...</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Difficulty</span>
+                                <span class="stat-value" id="dash-difficulty">Loading...</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Network Hashrate</span>
+                                <span class="stat-value" id="dash-hashrate">Loading...</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Mempool Size</span>
+                                <span class="stat-value" id="dash-mempool-size">Loading...</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Mempool Transactions</span>
+                                <span class="stat-value" id="dash-mempool-tx">Loading...</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Chain Work</span>
+                                <span class="stat-value" id="dash-chain-work">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-card latest-blocks">
+                        <h2>Latest Blocks</h2>
+                        <div class="table-container">
+                            <table id="latest-blocks-table">
+                                <thead>
+                                    <tr>
+                                        <th>Height</th>
+                                        <th>Hash</th>
+                                        <th>Age</th>
+                                        <th>Txs</th>
+                                        <th>Size</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="latest-blocks-body">
+                                    <tr>
+                                        <td colspan="5" class="loading-row">Loading blocks...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="view-more">
+                            <a href="#" data-view="blocks">View All Blocks</a>
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-card latest-transactions">
+                        <h2>Latest Transactions</h2>
+                        <div class="table-container">
+                            <table id="latest-txs-table">
+                                <thead>
+                                    <tr>
+                                        <th>Transaction ID</th>
+                                        <th>Time</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="latest-txs-body">
+                                    <tr>
+                                        <td colspan="4" class="loading-row">Loading transactions...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="view-more">
+                            <a href="#" data-view="transactions">View All Transactions</a>
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-card mempool-activity">
+                        <h2>Mempool Activity</h2>
+                        <div class="mempool-chart-container">
+                            <canvas id="mempool-chart"></canvas>
+                        </div>
+                        <div class="mempool-stats">
+                            <div class="mempool-stat">
+                                <span class="mempool-label">Total Pending</span>
+                                <span class="mempool-value" id="mempool-pending">Loading...</span>
+                            </div>
+                            <div class="mempool-stat">
+                                <span class="mempool-label">Total Fees</span>
+                                <span class="mempool-value" id="mempool-fees">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Other views will be loaded/rendered dynamically -->
+            <div id="blocks-view" class="view"></div>
+            <div id="transactions-view" class="view"></div>
+            <div id="addresses-view" class="view"></div>
+            <div id="assets-view" class="view"></div>
+            <div id="block-details-view" class="view"></div>
+            <div id="transaction-details-view" class="view"></div>
+            <div id="address-details-view" class="view"></div>
+            <div id="asset-details-view" class="view"></div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <p>EVR Tracky Boi - Evrmore Blockchain Explorer by @jc0839</p>
+                </div>
+                <div class="footer-links">
+                    <a href="#" id="clear-cache">Clear Cache</a>
+                    <a href="https://evrmorecoin.org" target="_blank">Evrmore</a>
+                    <a href="https://github.com/EvrmoreOrg/Evrmore" target="_blank">GitHub</a>
+                </div>
+                <div class="rpc-status">
+                    <span id="active-requests">Active RPC Requests: <span id="rpc-count">0</span></span>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Templates for dynamic content -->
+    <template id="blocks-template">
+        <div class="blocks-container">
+            <h2>Blocks Explorer</h2>
+            <div class="filter-controls">
+                <div class="range-selector">
+                    <label for="height-range">Block Range:</label>
+                    <input type="text" id="block-start" placeholder="Start Height">
+                    <span>to</span>
+                    <input type="text" id="block-end" placeholder="End Height">
+                    <button id="filter-blocks">Filter</button>
+                </div>
+            </div>
+            <div class="table-container">
+                <table id="blocks-table">
+                    <thead>
+                        <tr>
+                            <th>Height</th>
+                            <th>Hash</th>
+                            <th>Time</th>
+                            <th>Transactions</th>
+                            <th>Size (KB)</th>
+                            <th>Difficulty</th>
+                        </tr>
+                    </thead>
+                    <tbody id="blocks-table-body"></tbody>
+                </table>
+            </div>
+            <div class="pagination" id="blocks-pagination">
+                <button id="prev-blocks-page" disabled>Previous</button>
+                <span id="blocks-page-info">Page 1</span>
+                <button id="next-blocks-page">Next</button>
+            </div>
+        </div>
+    </template>
+
+    <template id="transactions-template">
+        <div class="transactions-container">
+            <h2>Transactions Explorer</h2>
+            <div class="mempool-toggle">
+                <label>
+                    <input type="checkbox" id="show-mempool" checked>
+                    Show Mempool Transactions
+                </label>
+            </div>
+            <div class="table-container">
+                <table id="transactions-table">
+                    <thead>
+                        <tr>
+                            <th>Transaction ID</th>
+                            <th>Block</th>
+                            <th>Time</th>
+                            <th>Inputs</th>
+                            <th>Outputs</th>
+                            <th>Amount (EVR)</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transactions-table-body"></tbody>
+                </table>
+            </div>
+            <div class="mempool-section">
+                <h3>Mempool Transactions</h3>
+                <div class="table-container">
+                    <table id="mempool-table">
+                        <thead>
+                            <tr>
+                                <th>Transaction ID</th>
+                                <th>Received Time</th>
+                                <th>Size (Bytes)</th>
+                                <th>Fee (EVR)</th>
+                                <th>Fee Rate (EVR/kB)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="mempool-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="block-details-template">
+        <div class="block-details-container">
+            <h2>Block <span id="block-detail-height"></span> Details</h2>
+            <div class="back-button">
+                <a href="#" id="back-to-blocks"><i class="fas fa-arrow-left"></i> Back to Blocks</a>
+            </div>
+            <div class="block-summary">
+                <div class="summary-item">
+                    <span class="label">Block Hash:</span>
+                    <span class="value" id="block-detail-hash"></span>
+                </div>
+                <div class="summary-item">
+                    <span class="label">Previous Block:</span>
+                    <span class="value"><a href="#" id="block-detail-prev-block"></a></span>
+                </div>
+                <div class="summary-item">
+                    <span class="label">Next Block:</span>
+                    <span class="value"><a href="#" id="block-detail-next-block"></a></span>
+                </div>
+                <div class="summary-item">
+                    <span class="label">Merkle Root:</span>
+                    <span class="value" id="block-detail-merkle-root"></span>
+                </div>
+                <div class="summary-item">
+                    <span class="label">Timestamp:</span>
+                    <span class="value" id="block-detail-time"></span>
+                </div>
+                <div class="summary-item">
+                    <span class="label">Difficulty:</span>
+                    <span class="value" id="block-detail-difficulty"></span>
+                </div>
+                <div class="summary-item">
+                    <span class="label">Nonce:</span>
+                    <span class="value" id="block-detail-nonce"></span>
+                </div>
+                <div class="summary-item">
+                    <span class="label">Bits:</span>
+                    <span class="value" id="block-detail-bits"></span>
+                </div>
+                <div class="summary-item">
+                    <span class="label">Size:</span>
+                    <span class="value" id="block-detail-size"></span>
+                </div>
+                <div class="summary-item">
+                    <span class="label">Confirmations:</span>
+                    <span class="value" id="block-detail-confirmations"></span>
+                </div>
+            </div>
+            <h3>Block Transactions (<span id="block-detail-tx-count"></span>)</h3>
+            <div class="table-container">
+                <table id="block-transactions-table">
+                    <thead>
+                        <tr>
+                            <th>Transaction ID</th>
+                            <th>Type</th>
+                            <th>Inputs</th>
+                            <th>Outputs</th>
+                            <th>Amount (EVR)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="block-transactions-body"></tbody>
+                </table>
+            </div>
+        </div>
+    </template>
+
+    <template id="transaction-details-template">
+        <div class="transaction-details-container">
+            <h2>Transaction Details</h2>
+            <div class="back-button">
+                <a href="#" id="back-to-transactions"><i class="fas fa-arrow-left"></i> Back</a>
+            </div>
+            <div class="transaction-status" id="tx-status-container">
+                <span class="status-label">Status:</span>
+                <span class="status-value" id="tx-status"></span>
+                <span class="confirmations" id="tx-confirmations"></span>
+            </div>
+            <div class="transaction-summary">
+                <div class="summary-item">
+                    <span class="label">Transaction ID:</span>
+                    <span class="value" id="tx-detail-id"></span>
+                </div>
+                <div class="summary-item">
+                    <span class="label">Block:</span>
+                    <span class="value"><a href="#" id="tx-detail-block"></a></span>
+                </div>
+                <div class="summary-item">
+                    <span class="label">Time:</span>
+                    <span class="value" id="tx-detail-time"></span>
+                </div>
+                <div class="summary-item">
+                    <span class="label">Size:</span>
+                    <span class="value" id="tx-detail-size"></span>
+                </div>
+                <div class="summary-item">
+                    <span class="label">Fee:</span>
+                    <span class="value" id="tx-detail-fee"></span>
+                </div>
+            </div>
+            
+            <div class="transaction-io">
+                <div class="inputs-container">
+                    <h3>Inputs (<span id="tx-input-count"></span>)</h3>
+                    <div class="io-list" id="tx-inputs-list"></div>
+                </div>
+                <div class="arrow-icon">
+                    <i class="fas fa-arrow-right"></i>
+                </div>
+                <div class="outputs-container">
+                    <h3>Outputs (<span id="tx-output-count"></span>)</h3>
+                    <div class="io-list" id="tx-outputs-list"></div>
+                </div>
+            </div>
+            
+            <div class="tx-assets-container">
+                <h3>Assets Transferred</h3>
+                <div id="tx-assets-list">
+                    <p>No assets transferred in this transaction.</p>
+                </div>
+            </div>
+            
+            <div class="raw-tx-container">
+                <h3>Raw Transaction</h3>
+                <div class="raw-data-toggle">
+                    <button id="toggle-raw-tx">Show Raw Data</button>
+                </div>
+                <pre id="raw-tx-data" class="raw-data hidden"></pre>
+            </div>
+        </div>
+    </template>
+
+    <template id="address-details-template">
+        <div class="address-details-container">
+            <h2>Address Details</h2>
+            <div class="back-button">
+                <a href="#" id="back-to-addresses"><i class="fas fa-arrow-left"></i> Back</a>
+            </div>
+            <div class="address-summary">
+                <div class="summary-item address-field">
+                    <span class="label">Address:</span>
+                    <span class="value" id="address-detail-addr"></span>
+                </div>
+                <div class="summary-item">
+                    <span class="label">Balance:</span>
+                    <span class="value" id="address-detail-balance"></span>
+                </div>
+                
+                <div class="summary-item">
+                    <span class="label">Transaction Count:</span>
+                    <span class="value" id="address-detail-tx-count"></span>
+                </div>
+            </div>
+            
+            <div class="address-assets">
+                <h3>Assets Held</h3>
+                <div class="table-container">
+                    <table id="address-assets-table">
+                        <thead>
+                            <tr>
+                                <th>Asset Name</th>
+                                <th>Balance</th>
+                            </tr>
+                        </thead>
+                        <tbody id="address-assets-body"></tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="address-txs">
+                <h3>Transactions</h3>
+                <div class="table-container">
+                    <table id="address-txs-table">
+                        <thead>
+                            <tr>
+                                <th>Transaction ID</th>
+                                <th>Block</th>
+                                <th>Time</th>
+                                <th>Type</th>
+                                <th>Amount (EVR)</th>
+                                <th>Balance Change</th>
+                            </tr>
+                        </thead>
+                        <tbody id="address-txs-body"></tbody>
+                    </table>
+                </div>
+                <div class="pagination" id="address-txs-pagination">
+                    <button id="prev-address-page" disabled>Previous</button>
+                    <span id="address-page-info">Page 1</span>
+                    <button id="next-address-page">Next</button>
+                </div>
+            </div>
+            
+            
+        </div>
+    </template>
+
+    <template id="assets-template">
+        <div class="assets-container">
+            <h2>Assets Explorer</h2>
+            <div class="search-controls">
+                <div class="asset-search">
+                    <input type="text" id="asset-search-input" placeholder="Search asset name... (live search)">
+                    <button id="search-asset">Go to Asset</button>
+                </div>
+                <div class="search-tip">
+                    <small>Start typing to search assets. Assets are case-insensitive.</small>
+                </div>
+            </div>
+            <div class="table-container">
+                <table id="assets-table">
+                    <thead>
+                        <tr>
+                            <th>Asset Name</th>
+                            <th>Total Supply</th>
+                            <th>Units</th>
+                            <th>Reissuable</th>
+                            <th>Issuer</th>
+                        </tr>
+                    </thead>
+                    <tbody id="assets-table-body"></tbody>
+                </table>
+            </div>
+            <div class="pagination" id="assets-pagination">
+                <button id="prev-assets-page" disabled>Previous</button>
+                <span id="assets-page-info">Page 1</span>
+                <button id="next-assets-page">Next</button>
+            </div>
+        </div>
+    </template>
+    
+    <!-- Updated asset-details-template with IPFS support -->
+    <!-- Fixed asset-details-template with all required elements -->
+    <template id="asset-details-template">
+        <div class="asset-details-container">
+            <h2>Asset Details</h2>
+            <div class="back-button">
+                <a href="#" id="back-to-assets"><i class="fas fa-arrow-left"></i> Back</a>
+            </div>
+            <div class="asset-summary">
+                <div class="summary-item asset-name">
+                    <span class="label">Name:</span>
+                    <span class="value" id="asset-detail-name"></span>
+                </div>
+                <div class="summary-item">
+                    <span class="label">Total Supply:</span>
+                    <span class="value" id="asset-detail-supply"></span>
+                </div>
+                <div class="summary-item">
+                    <span class="label">Units:</span>
+                    <span class="value" id="asset-detail-units"></span>
+                </div>
+                <div class="summary-item">
+                    <span class="label">Reissuable:</span>
+                    <span class="value" id="asset-detail-reissuable"></span>
+                </div>
+                <div class="summary-item">
+                    <span class="label">Has IPFS:</span>
+                    <span class="value" id="asset-detail-has-ipfs"></span>
+                </div>
+                <div class="summary-item" id="asset-ipfs-container">
+                    <span class="label">IPFS Hash:</span>
+                    <span class="value" id="asset-detail-ipfs"></span>
+                </div>
+ 
+            </div>
+            
+            <div class="asset-holders">
+                <h3>Asset Holders</h3>
+                <p class="sort-instruction">Click on column headers to sort</p>
+                <div class="table-container">
+                    <table id="asset-holders-table">
+                        <thead>
+                            <tr>
+                                <!-- Table headers will be dynamically generated with sort indicators -->
+                            </tr>
+                        </thead>
+                        <tbody id="asset-holders-body"></tbody>
+                    </table>
+                </div>
+                <div class="pagination" id="asset-holders-pagination">
+                    <button id="prev-holders-page" disabled>Previous</button>
+                    <span id="holders-page-info">Page 1</span>
+                    <button id="next-holders-page">Next</button>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    
+    
+
+    <!-- JavaScript libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    
+    <!-- Application scripts - order matters for dependencies -->
+    <script src="scripts/utilities.js"></script>
+    <script src="scripts/ui.js"></script>
+    <!-- Load modules before app.js -->
+    <script src="scripts/blocks.js"></script>
+    <script src="scripts/transactions.js"></script>
+    <script src="scripts/addresses.js"></script>
+    <script src="scripts/assets.js"></script>
+    <script src="scripts/search.js"></script>
+    <script src="scripts/router.js"></script>
+    <script src="scripts/tracing.js"></script>
+    <script src="scripts/settings.js"></script>
+    
+
+    <!-- Load app.js last as it depends on all other modules -->
+    <script src="scripts/app.js"></script>
+</body>
+</html>
